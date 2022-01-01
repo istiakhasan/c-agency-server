@@ -193,7 +193,7 @@ app.patch('/update-status', (req, res) => {
 
 
 
-app.listen(process.env.PORT || port))
+app.listen(process.env.PORT || port)
 
 
 
