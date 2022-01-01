@@ -193,7 +193,7 @@ app.patch('/update-status', (req, res) => {
 
 
 
-app.listen(port,()=>console.log("Port started successfully"))
+app.listen(process.env.PORT || port))
 
 
 
