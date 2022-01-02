@@ -118,31 +118,45 @@ client.connect(err => {
     const filepath=`${__dirname}/order/${file.name}`;
     
     console.log("req body=",req.body)
+
+    const newImg=file.data
+    const encImg=newImg.toString('base64')
+    var image={
+      contentType:file.mimetype,
+      size:file.size,
+      img:Buffer.from(encImg,'base64')
+    }
+    OrderCollection.insertOne({name,email,title,desc,price,image,status})
+    .then(result=>{
+      res.send(result.acknowledged===true)
+    })
+
     
-     file.mv(filepath,err=>{
-       if(err){
-         console.log(err)
-         return res.status(500).send({msg:"Faild to upload image"})
-       }
-       const newImg=fs.readFileSync(filepath)
-       const encImg=newImg.toString('base64')
-       var image={
-         contentType: req.files.file.mimetype,
-         size:req.files.file.size,
-         img:Buffer(encImg,'base64')
+    
+    //  file.mv(filepath,err=>{
+    //    if(err){
+    //      console.log(err)
+    //      return res.status(500).send({msg:"Faild to upload image"})
+    //    }
+    //    const newImg=fs.readFileSync(filepath)
+    //    const encImg=newImg.toString('base64')
+    //    var image={
+    //      contentType: req.files.file.mimetype,
+    //      size:req.files.file.size,
+    //      img:Buffer(encImg,'base64')
   
-       }
-       OrderCollection.insertOne({name,email,title,desc,price,image,status})
-       .then((result=>{
-         res.send(result.acknowledged===true)
-         fs.remove(filepath,error=>{
-           if(error){console.log(error)}
-         })
-       }))
+    //    }
+    //    OrderCollection.insertOne({name,email,title,desc,price,image,status})
+    //    .then((result=>{
+    //      res.send(result.acknowledged===true)
+    //      fs.remove(filepath,error=>{
+    //        if(error){console.log(error)}
+    //      })
+    //    }))
        
        
       
-     })
+    //   })
   
 })
 
