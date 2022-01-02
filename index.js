@@ -56,7 +56,7 @@ client.connect(err => {
     const title=req.body.title
     const desc=req.body.desc
 
-
+   console.log(req.body,req.files)
 
     const newImg=file.data
     const encImg=newImg.toString('base64')
@@ -65,7 +65,7 @@ client.connect(err => {
       size:file.size,
       img:Buffer.from(encImg,'base64')
     }
-    serviceCollection.insertOne({name,email,title,desc,price,image})
+    serviceCollection.insertOne({title,desc,image})
     .then(result=>{
       res.send(result.acknowledged===true)
     })
