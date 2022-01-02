@@ -55,28 +55,44 @@ client.connect(err => {
     const file=req.files.file
     const title=req.body.title
     const desc=req.body.desc
-    const filepath=`${__dirname}/serviceicon/${file.name}`
-    file.mv(filepath,err=>{
-      if(err){
-       return res.status(500).send({msg:"faild to load image"})
-      }
 
-      const newImg=fs.readFileSync(filepath)
-      const encImg=newImg.toString('base64')
 
-      var Image={
-        contentType:req.files.file.mimetype,
-        size:req.files.file.size,
-        img:Buffer(encImg,'base64')
-      }
-      serviceCollection.insertOne({title,desc,Image})
-      .then(result=>{
-        fs.remove(filepath,err=>{
-          if(err){console.log(err)}
-        })
-        res.send(result.acknowledged===true)
-      })
+
+    const newImg=file.data
+    const encImg=newImg.toString('base64')
+    var image={
+      contentType:file.mimetype,
+      size:file.size,
+      img:Buffer.from(encImg,'base64')
+    }
+    serviceCollection.insertOne({name,email,title,desc,price,image})
+    .then(result=>{
+      res.send(result.acknowledged===true)
     })
+    // const filepath=`${__dirname}/serviceicon/${file.name}`
+    // file.mv(filepath,err=>{
+    //   if(err){
+    //    return res.status(500).send({msg:"faild to load image"})
+    //   }
+
+    //   const newImg=fs.readFileSync(filepath)
+    //   const encImg=newImg.toString('base64')
+
+    //   var Image={
+    //     contentType:req.files.file.mimetype,
+    //     size:req.files.file.size,
+    //     img:Buffer(encImg,'base64')
+    //   }
+    //   serviceCollection.insertOne({title,desc,Image})
+    //   .then(result=>{
+    //     fs.remove(filepath,err=>{
+    //       if(err){console.log(err)}
+    //     })
+    //     res.send(result.acknowledged===true)
+    //   })
+    // })
+
+
     console.log(file,title,desc)
   })
 
@@ -115,7 +131,7 @@ client.connect(err => {
     const price=req.body.price
     const status="pending"
     
-    const filepath=`${__dirname}/order/${file.name}`;
+    // const filepath=`${__dirname}/order/${file.name}`;
     
     console.log("req body=",req.body)
 
