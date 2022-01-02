@@ -67,7 +67,7 @@ client.connect(err => {
       var Image={
         contentType:req.files.file.mimetype,
         size:req.files.file.size,
-        img:Buffer.from(encImg,'base64')
+        img:Buffer(encImg,'base64')
       }
       serviceCollection.insertOne({title,desc,Image})
       .then(result=>{
@@ -117,7 +117,7 @@ client.connect(err => {
     
     const filepath=`${__dirname}/order/${file.name}`;
     
-   
+    console.log("req body=",req.body)
     
      file.mv(filepath,err=>{
        if(err){
@@ -129,7 +129,7 @@ client.connect(err => {
        var image={
          contentType: req.files.file.mimetype,
          size:req.files.file.size,
-         img:Buffer.from(encImg,'base64')
+         img:Buffer(encImg,'base64')
   
        }
        OrderCollection.insertOne({name,email,title,desc,price,image,status})
@@ -193,7 +193,9 @@ app.patch('/update-status', (req, res) => {
 
 
 
-app.listen(process.env.PORT || port)
+app.listen(process.env.PORT || port,err=>{
+  console.log("port start successfully")
+})
 
 
 
